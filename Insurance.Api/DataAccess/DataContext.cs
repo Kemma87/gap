@@ -16,6 +16,12 @@ namespace DataAccess
         {
             builder.Entity<User>()
             .HasOne(u => u.Person);
+
+            builder.Entity<Person>()
+            .HasOne(u => u.Gender);
+
+            builder.Entity<Person>()
+            .HasOne(u => u.Country);
         }
     }
 }
