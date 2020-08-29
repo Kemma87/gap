@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Dental insurance",
+    "CoverPercentage": 10
+  },
+  {
+    "Name": "Disability insurance",
+    "CoverPercentage": 25
+  },
+  {
+    "Name": "Life insurance",
+    "CoverPercentage": 30
+  },
+  {
+    "Name": "Pet insurance",
+    "CoverPercentage": 50
+  },
+  {
+    "Name": "Homeowners or renters insurance",
+    "CoverPercentage": 20
+  },
+  {
+    "Name": "Flood insurance",
+    "CoverPercentage": 100
+  }
+]
