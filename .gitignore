@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Insurance.Api/Insurance.WebApi/bin/Debug/netcoreapp3.1
+/Insurance.Api/Insurance.WebApi/obj
+/Insurance.Api/.vs/Insurance.Api/v16
