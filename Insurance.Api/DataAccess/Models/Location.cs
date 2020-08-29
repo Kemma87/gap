@@ -2,11 +2,12 @@
 
 namespace DataAccess.Models
 {
-    public class Country
+    public class Location
     {
         public int Id { get; set; }
         [Required]
-        [MaxLength(30)]
-        public string Name { get; set; }
+        public Country Country { get; set; }
+        [Required]
+        public string Address { get; set; }
     }
 }

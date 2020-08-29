@@ -2,11 +2,13 @@
 
 namespace DataAccess.Models
 {
-    public class Country
+    public class CoverType
     {
         public int Id { get; set; }
         [Required]
-        [MaxLength(30)]
+        [MaxLength(20)]
         public string Name { get; set; }
+        [Required]
+        public int CoveringPercentage { get; set; }
     }
 }

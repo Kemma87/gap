@@ -2,11 +2,10 @@
 
 namespace DataAccess.Models
 {
-    public class Country
+    public class RiskType
     {
         public int Id { get; set; }
-        [Required]
-        [MaxLength(30)]
+        [MaxLength(15)]
         public string Name { get; set; }
     }
 }

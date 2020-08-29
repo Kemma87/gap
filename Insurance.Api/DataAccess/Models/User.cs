@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Models
@@ -7,6 +8,7 @@ namespace DataAccess.Models
     {
         public int Id { get; set; }
         [Required]
+        [MaxLength(20)]
         public string Username { get; set; }
         [Required]
         public byte[] PasswordHash { get; set; }
@@ -18,5 +20,7 @@ namespace DataAccess.Models
         public DateTime LastActive { get; set; }
         [Required]
         public Person Person { get; set; }
+        [Required]
+        public ICollection<UserRoles> Roles { get; set; }
     }
 }
