@@ -19,6 +19,11 @@ namespace DataAccess.Models
         [Required]
         public long Cost { get; set; }
         [Required]
+        public DateTime CreationDate { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string UserCreate { get; set; }
+        [Required]
         public RiskType RiskType { get; set; }
         [Required]
         public Location Location { get; set; }

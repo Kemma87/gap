@@ -27,6 +27,7 @@ namespace Insurance.WebApi
 
             //Registering services
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IInsuranceRepository, InsuranceRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
@@ -38,7 +39,7 @@ namespace Insurance.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

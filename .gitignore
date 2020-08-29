@@ -9,3 +9,4 @@
 /Insurance.Api/DataAccess/obj
 /Insurance.Api/.vs/Insurance.Api/config
 /Insurance.Api/.vs/Insurance.Api/DesignTimeBuild
+*.user

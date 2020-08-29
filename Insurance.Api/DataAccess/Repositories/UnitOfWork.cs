@@ -7,38 +7,20 @@ namespace DataAccess.Repositories
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private bool disposed = false;
         private readonly DataContext _context;
-        private Repository<InsurancePolicy> _insurancePolicies;
-        private Repository<User> _users;
-        private Repository<Role> _roles;
+
+        private InsuranceRepository _insuranceRepository;
 
         public UnitOfWork(DataContext context)
         {
             _context = context;
         }
 
-        public IRepository<InsurancePolicy> InsurancePolicies
+        public IInsuranceRepository InsuranceRepository
         {
             get
             {
-                return _insurancePolicies ?? (_insurancePolicies = new Repository<InsurancePolicy>(_context));
-            }
-        }
-
-        public IRepository<User> Users
-        {
-            get
-            {
-                return _users ?? (_users = new Repository<User>(_context));
-            }
-        }
-
-        public IRepository<Role> Roles
-        {
-            get
-            {
-                return _roles ?? (_roles = new Repository<Role>(_context));
+                return _insuranceRepository ?? (_insuranceRepository = new InsuranceRepository(_context));
             }
         }
 
@@ -46,6 +28,9 @@ namespace DataAccess.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        #region Dispose
+        private bool disposed = false;
 
         public void Dispose()
         {
@@ -65,5 +50,6 @@ namespace DataAccess.Repositories
 
             disposed = true;
         }
+        #endregion
     }
 }
