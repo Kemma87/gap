@@ -30,6 +30,19 @@ namespace Insurance.WebApi.Controllers
             return Ok(listOfInsurances);
         }
 
+        [HttpGet("{id}", Name = "GetInsurance")]
+        public async Task<IActionResult> GetById(string userId, int id)
+        {
+            var insurance = await _unitOfWork.InsuranceRepository.GetAllInsurancesByIdAsync(id);
+
+            if (insurance == null)
+            {
+                throw new ArgumentException($"No Insurance found for the Id: {id}");
+            }
+
+            return Ok(insurance);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Add(string userId, InsuranceCreationDto insurance)
         {
@@ -37,7 +50,7 @@ namespace Insurance.WebApi.Controllers
             await _unitOfWork.InsuranceRepository.AddAsync(insuranceToCreate);
             await _unitOfWork.CommitAsync();
 
-            return Ok();
+            return CreatedAtRoute("GetInsurance", new { Controller = "Insurance", id = insuranceToCreate.Id }, insuranceToCreate);
         }
 
         [HttpDelete("{id}")]

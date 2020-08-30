@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace DataAccess.Seedings
 {
@@ -81,6 +82,55 @@ namespace DataAccess.Seedings
                 }
                 context.SaveChanges();
             }
+
+            if (!context.Person.Any())
+            {
+                var personData = File.ReadAllText("../DataAccess/Seedings/Person.json");
+                var persons = JsonConvert.DeserializeObject<List<Person>>(personData);
+
+                foreach (var person in persons)
+                {
+                    person.CountryId = context.Countries.FirstOrDefault().Id;
+                    person.GenderId = context.Genders.FirstOrDefault(x => x.Name == "Male").Id;
+                    context.Person.Add(person);
+                }
+                context.SaveChanges();
+            }
+
+            if (!context.Users.Any())
+            {
+                var userData = File.ReadAllText("../DataAccess/Seedings/User.json");
+                var users = JsonConvert.DeserializeObject<List<User>>(userData);
+
+                foreach (var user in users)
+                {
+                    GeneratePasswordHash(user, "admin");
+                    user.Username = user.Username.ToLower();
+                    user.PersonId = context.Person.FirstOrDefault().Id;
+
+                    context.Users.Add(user);
+                    context.SaveChanges();
+
+                    var userRoles = new UserRoles
+                    {
+                        RoleId = context.Roles.FirstOrDefault(x => x.RoleName == "Administrator").Id,
+                        UserId = user.Id
+                    };
+
+                    context.UserRoles.Add(userRoles);
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        private static void GeneratePasswordHash(User user, string password)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                user.PasswordSalt = hmac.Key;
+                user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            };
         }
     }
 }

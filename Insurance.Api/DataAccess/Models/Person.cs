@@ -18,8 +18,10 @@ namespace DataAccess.Models
         public DateTime Modified { get; set; }
         public string Address { get; set; }
         [Required]
+        public int CountryId { get; set; }
         public Country Country { get; set; }
         [Required]
+        public int GenderId { get; set; }
         public Gender Gender { get; set; }
     }
 }

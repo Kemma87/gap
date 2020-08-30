@@ -7,5 +7,6 @@ namespace DataAccess.Contracts
     public interface IInsuranceRepository: IRepository<InsurancePolicy>
     {
         Task<IEnumerable<InsurancePolicy>> GetAllInsurancesAsync();
+        Task<InsurancePolicy> GetAllInsurancesByIdAsync(int id);
     }
 }

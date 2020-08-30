@@ -23,5 +23,14 @@ namespace DataAccess.Repositories
                    .Include(x => x.CoverType)
                    .ToListAsync();
         }
+
+        public async Task<InsurancePolicy> GetAllInsurancesByIdAsync(int id)
+        {
+            return await _dataContext.InsurancePolicies
+                   .Include(x => x.RiskType)
+                   .Include(x => x.Location).ThenInclude(x => x.Country)
+                   .Include(x => x.CoverType)
+                   .FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

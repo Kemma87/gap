@@ -1,5 +1,4 @@
 ﻿using DataAccess.Contracts;
-using DataAccess.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -10,6 +9,7 @@ namespace DataAccess.Repositories
         private readonly DataContext _context;
 
         private InsuranceRepository _insuranceRepository;
+        private UserRepository _userRepository;
 
         public UnitOfWork(DataContext context)
         {
@@ -21,6 +21,14 @@ namespace DataAccess.Repositories
             get
             {
                 return _insuranceRepository ?? (_insuranceRepository = new InsuranceRepository(_context));
+            }
+        }
+
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                return _userRepository ?? (_userRepository = new UserRepository(_context));
             }
         }
 
