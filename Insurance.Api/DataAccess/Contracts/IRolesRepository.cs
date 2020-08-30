@@ -6,6 +6,6 @@ namespace DataAccess.Contracts
 {
     public interface IRolesRepository: IRepository<Role>
     {
-        Task<ICollection<Role>> GetRolesByUserId(int userId);
+        Task<ICollection<string>> GetRolesByUserId(int userId);
     }
 }

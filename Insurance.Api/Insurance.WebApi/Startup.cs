@@ -11,6 +11,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using InsuranceEngine;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Insurance.WebApi.Authorization;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
+using Insurance.WebApi.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace Insurance.WebApi
 {
@@ -28,7 +37,6 @@ namespace Insurance.WebApi
         {
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("DataAccess")));
             services.AddControllers();
-
             services.AddAutoMapper(typeof(UserEngine).Assembly);
 
             //Registering services
@@ -39,6 +47,26 @@ namespace Insurance.WebApi
             services.AddScoped<IInsuranceEngine, Engine.InsuranceEngine>();
             services.AddScoped<IUserEngine, Engine.UserEngine>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IAuthorizationHandler, RoleHandler>();
+
+            //Validate Authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policyBuilder => policyBuilder.RequireRole("Administrator"));
+                options.AddPolicy("IT", policyBuilder => policyBuilder.RequireRole("IT"));
+                options.AddPolicy("Service", policyBuilder => policyBuilder.RequireRole("CustomerService"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,11 +76,28 @@ namespace Insurance.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler(builder =>
+                {
+                    builder.Run(async context =>
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
 
-            //app.UseHttpsRedirection();
+                        if (error != null)
+                        {
+                            context.Response.AddApplicationError(error.Error.Message);
+                            await context.Response.WriteAsync(error.Error.Message);
+                        }
+                    });
+                });
+            }
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

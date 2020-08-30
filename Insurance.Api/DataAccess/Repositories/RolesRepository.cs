@@ -16,12 +16,12 @@ namespace DataAccess.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task<ICollection<Role>> GetRolesByUserId(int userId)
+        public async Task<ICollection<string>> GetRolesByUserId(int userId)
         {
             return await (from userRole in _dataContext.UserRoles
                             join role in _dataContext.Roles on userRole.RoleId equals role.Id
                             where userRole.UserId == userId
-                            select role).ToListAsync();
+                            select role.RoleName).ToListAsync();
         }
     }
 }

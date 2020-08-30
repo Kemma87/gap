@@ -27,6 +27,11 @@ namespace InsuranceEngine
             _config = config;
         }
 
+        public async Task<ICollection<string>> GetRolesByUserIdAsync(int userId)
+        {
+            return await _unitOfWork.RolesRepository.GetRolesByUserId(userId);
+        }
+
         public async Task<UserReturnDto> LoginAsync(UserForLoginDto login)
         {
             var userFound = await _unitOfWork.UserRepository.LoginAsync(login.Username, login.Password);
@@ -36,17 +41,37 @@ namespace InsuranceEngine
                 return null;
             }
 
-            var userRoles = await _unitOfWork.RolesRepository.GetRolesByUserId(userFound.Id);
-
             var user = _mapper.Map<UserReturnDto>(userFound);
-            user.Token = GenerateToken(userFound);
-            user.Roles = _mapper.Map<ICollection<UserRoleDto>>(userRoles);
+            user.Token = GenerateToken(user);
 
             return user;
         }
 
+        public async Task<UserReturnDto> AddUserAsync(UserAddDto user)
+        {
+            user.Username = user.Username.ToLower();
 
-        private string GenerateToken(User user)
+            if (await _unitOfWork.UserRepository.UserExistsAsync(user.Username))
+            {
+                throw new ArgumentException($"The user {user.Username} already exists.");
+            }
+
+            var person = _mapper.Map<Person>(user);
+            person.Created = DateTime.UtcNow;
+            person.Modified = DateTime.UtcNow;
+            await _unitOfWork.CommitAsync();
+
+            var userToSave = _mapper.Map<User>(user);
+            userToSave.Created = DateTime.UtcNow;
+            userToSave.LastActive = DateTime.UtcNow;
+            userToSave.PersonId = person.Id;
+
+            await _unitOfWork.CommitAsync();
+
+            return _mapper.Map<UserReturnDto>(userToSave);
+        }
+
+        private string GenerateToken(UserReturnDto user)
         {
             var claims = new[]
             {
