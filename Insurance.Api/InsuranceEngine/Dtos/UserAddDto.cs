@@ -10,7 +10,7 @@ namespace InsuranceEngine.Dtos
         public string Username { get; set; }
         [Required]
         [StringLength(15, MinimumLength = 8, ErrorMessage = "You must specify password be between 8 and 15 characters")]
-        public string Passwrod { get; set; }
+        public string Password { get; set; }
         [Required]
         public ICollection<int> Roles { get; set; }
 

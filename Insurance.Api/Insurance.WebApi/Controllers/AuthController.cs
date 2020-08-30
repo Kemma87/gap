@@ -35,8 +35,18 @@ namespace Insurance.WebApi.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AddUser(UserAddDto user)
         {
-           var userCreated = await _userEngine.AddUserAsync(user);
-            return CreatedAtRoute("GetUser", new { Controller = "Auth", id = userCreated.Id }, userCreated);
+            var userCreated = await _userEngine.AddUserAsync(user);
+            var userToReturn = await _userEngine.GetUserDetailsByIdAsync(userCreated.Id);
+            return CreatedAtRoute("GetUser", new { Controller = "Auth", id = userToReturn.Id }, userToReturn);
+        }
+
+        [HttpGet("{id}", Name = "GetUser")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var user = await _userEngine.GetUserDetailsByIdAsync(id);
+
+            return Ok(user);
         }
     }
 }

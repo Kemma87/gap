@@ -48,13 +48,13 @@ namespace DataAccess
            .HasOne(u => u.User)
            .WithMany(u => u.Roles)
            .HasForeignKey(u => u.UserId)
-           .OnDelete(DeleteBehavior.Restrict);
+           .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<UserRoles>()
            .HasOne(u => u.Role)
            .WithMany(u => u.Users)
            .HasForeignKey(u => u.RoleId)
-           .OnDelete(DeleteBehavior.Restrict);
+           .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

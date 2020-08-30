@@ -8,6 +8,7 @@ namespace DataAccess.Contracts
         Task<User> CreateAsync(User user, string password);
         Task<User> LoginAsync(string username, string password);
         Task<bool> UserExistsAsync(string username);
+        Task<User> GetUserDetailsByIdAsync(int id);
         Task<bool> ResetPasswordAsync(string username, string password);
     }
 }

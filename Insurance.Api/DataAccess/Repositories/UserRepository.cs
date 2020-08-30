@@ -94,5 +94,20 @@ namespace DataAccess.Repositories
                 return true;
             };
         }
+
+        public async Task<User> GetUserDetailsByIdAsync(int id)
+        {
+            var user = await _dataContext.Users
+                 .Include(p => p.Person).ThenInclude(x => x.Country)
+                 .Include(p => p.Roles)
+                 .Include(p => p.Person).ThenInclude(x => x.Gender).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user;
+        }
     }
 }

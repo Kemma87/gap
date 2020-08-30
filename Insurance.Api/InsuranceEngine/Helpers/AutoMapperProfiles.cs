@@ -11,7 +11,8 @@ namespace InsuranceEngine.Helpers
             CreateMap<InsuranceCreationDto, InsurancePolicy>();
             CreateMap<InsurancePolicy, InsuranceReturnDto>();
             CreateMap<UserAddDto, Person>();
-            CreateMap<UserAddDto, User>();
+            CreateMap<UserAddDto, User>()
+              .ForMember(dest => dest.Roles, opt => opt.Ignore());
 
             CreateMap<User, UserReturnDto>()
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Person.FirstName))

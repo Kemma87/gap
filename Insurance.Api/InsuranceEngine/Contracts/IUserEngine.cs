@@ -8,6 +8,7 @@ namespace InsuranceEngine.Contracts
     {
         Task<UserReturnDto> LoginAsync(UserForLoginDto login);
         Task<ICollection<string>> GetRolesByUserIdAsync(int userId);
+        Task<UserReturnDto> GetUserDetailsByIdAsync(int id);
         Task<UserReturnDto> AddUserAsync(UserAddDto user);
     }
 }

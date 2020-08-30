@@ -59,16 +59,41 @@ namespace InsuranceEngine
             var person = _mapper.Map<Person>(user);
             person.Created = DateTime.UtcNow;
             person.Modified = DateTime.UtcNow;
+            await _unitOfWork.PersonRepository.AddAsync(person);
             await _unitOfWork.CommitAsync();
 
             var userToSave = _mapper.Map<User>(user);
             userToSave.Created = DateTime.UtcNow;
             userToSave.LastActive = DateTime.UtcNow;
             userToSave.PersonId = person.Id;
+            GeneratePasswordHash(userToSave, user.Password);
+
+            await _unitOfWork.UserRepository.AddAsync(userToSave);
+            await _unitOfWork.CommitAsync();
+
+            foreach (var role in user.Roles)
+            {
+                var userRole = new UserRoles
+                {
+                    UserId = userToSave.Id,
+                    RoleId = role
+                };
+
+                await _unitOfWork.UserRoleRepository.AddAsync(userRole);
+            }
 
             await _unitOfWork.CommitAsync();
 
             return _mapper.Map<UserReturnDto>(userToSave);
+        }
+
+        public async Task<UserReturnDto> GetUserDetailsByIdAsync(int id)
+        {
+            var user = await _unitOfWork.UserRepository.GetUserDetailsByIdAsync(id);
+            var userToReturn = _mapper.Map<UserReturnDto>(user);
+            userToReturn.Token = GenerateToken(userToReturn);
+
+            return userToReturn;
         }
 
         private string GenerateToken(UserReturnDto user)
@@ -92,6 +117,15 @@ namespace InsuranceEngine
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        private void GeneratePasswordHash(User user, string password)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                user.PasswordSalt = hmac.Key;
+                user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            };
         }
     }
 }

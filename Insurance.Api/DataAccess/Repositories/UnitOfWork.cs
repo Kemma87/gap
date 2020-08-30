@@ -11,6 +11,8 @@ namespace DataAccess.Repositories
         private InsuranceRepository _insuranceRepository;
         private UserRepository _userRepository;
         private RolesRepository _rolesRepository;
+        private PersonRepository _personRepository;
+        private UserRoleRepository _userRoleRepository;
 
         public UnitOfWork(DataContext context)
         {
@@ -21,7 +23,7 @@ namespace DataAccess.Repositories
         {
             get
             {
-                return _insuranceRepository ?? (_insuranceRepository = new InsuranceRepository(_context));
+                return _insuranceRepository ??= new InsuranceRepository(_context);
             }
         }
 
@@ -29,7 +31,7 @@ namespace DataAccess.Repositories
         {
             get
             {
-                return _userRepository ?? (_userRepository = new UserRepository(_context));
+                return _userRepository ??= new UserRepository(_context);
             }
         }
 
@@ -37,7 +39,23 @@ namespace DataAccess.Repositories
         {
             get
             {
-                return _rolesRepository ?? (_rolesRepository = new RolesRepository(_context));
+                return _rolesRepository ??= new RolesRepository(_context);
+            }
+        }
+
+        public IPersonRepository PersonRepository
+        {
+            get
+            {
+                return _personRepository ??= new PersonRepository(_context);
+            }
+        }
+
+        public IUserRoleRepository UserRoleRepository
+        {
+            get
+            {
+                return _userRoleRepository ??= new UserRoleRepository(_context);
             }
         }
 
