@@ -69,6 +69,18 @@ namespace DataAccess.Seedings
                 }
                 context.SaveChanges();
             }
+
+            if (!context.Locations.Any())
+            {
+                var locationData = File.ReadAllText("../DataAccess/Seedings/Locations.json");
+                var locations = JsonConvert.DeserializeObject<List<Location>>(locationData);
+
+                foreach (var location in locations)
+                {
+                    context.Locations.Add(location);
+                }
+                context.SaveChanges();
+            }
         }
     }
 }

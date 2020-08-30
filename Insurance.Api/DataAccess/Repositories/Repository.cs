@@ -24,15 +24,14 @@ namespace DataAccess.Repositories
             await dbSet.AddAsync(entity);
         }
 
-        public async Task DeleteAsync(object id)
+        public void Delete(T entity)
         {
-            T result = await dbSet.FindAsync(id);
-            dbSet.Remove(result);
+            dbSet.Remove(entity);
         }
 
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
-           return await dbSet.Where(predicate).ToListAsync();
+            return await dbSet.Where(predicate).ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -45,17 +44,10 @@ namespace DataAccess.Repositories
             return await dbSet.FindAsync(id);
         }
 
-        public async Task UpdateAsync(T entity, object id)
+        public void Update(T entity)
         {
-            var current = await dbSet.FindAsync(id);
-
-            if (current != null)
-            {
-                
-                dbSet.Attach(entity);
-                context.Entry(current).CurrentValues.SetValues(entity);
-                context.Entry(entity).State = EntityState.Modified;
-            }
+            dbSet.Attach(entity);
+            context.Entry(entity).State = EntityState.Modified;
         }
     }
 }

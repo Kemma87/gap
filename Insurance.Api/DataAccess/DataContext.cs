@@ -29,6 +29,9 @@ namespace DataAccess
             builder.Entity<Person>()
             .HasOne(u => u.Country);
 
+            builder.Entity<Location>()
+           .HasOne(u => u.Country);
+
             builder.Entity<InsurancePolicy>()
             .HasOne(u => u.RiskType);
 

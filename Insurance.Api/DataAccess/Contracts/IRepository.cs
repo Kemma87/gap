@@ -11,7 +11,7 @@ namespace DataAccess.Contracts
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task AddAsync(T entity);
-        Task DeleteAsync(object id);
-        Task UpdateAsync(T entity, object id);
+        void Delete(T entity);
+        void Update(T entity);
     }
 }

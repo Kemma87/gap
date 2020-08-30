@@ -19,6 +19,7 @@ namespace DataAccess.Models
         [Required]
         public DateTime LastActive { get; set; }
         [Required]
+        public int PersonId { get; set; }
         public Person Person { get; set; }
         [Required]
         public ICollection<UserRoles> Roles { get; set; }

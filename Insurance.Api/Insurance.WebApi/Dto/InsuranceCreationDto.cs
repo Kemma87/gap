@@ -11,9 +11,11 @@ namespace Insurance.WebApi.Dto
         }
 
         [Required]
+        [MaxLength(30, ErrorMessage = "Insurance policy name must be up to 30 chracters")]
         public string Name { get; set; }
 
         [Required]
+        [MaxLength(300, ErrorMessage = "Insurance policy description must be up to 300 chracters")]
         public string Description { get; set; }
 
         [Required]
@@ -26,15 +28,15 @@ namespace Insurance.WebApi.Dto
         public long Cost { get; set; }
 
         [Required]
-        public int RiskType { get; set; }
+        public int RiskTypeId { get; set; }
 
         [Required]
-        public int CoverType { get; set; }
+        public int CoverTypeId { get; set; }
 
         [Required]
-        public int Location { get; set; }
+        public int LocationId { get; set; }
 
         public DateTime CreationDate { get; set; }
-        public string UserId { get; set; }
+        public string UserCreate { get; set; }
     }
 }

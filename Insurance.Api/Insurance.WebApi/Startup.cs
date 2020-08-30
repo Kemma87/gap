@@ -1,3 +1,4 @@
+using AutoMapper;
 using DataAccess;
 using DataAccess.Contracts;
 using DataAccess.Repositories;
@@ -24,6 +25,8 @@ namespace Insurance.WebApi
         {
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("DataAccess")));
             services.AddControllers();
+
+            services.AddAutoMapper(typeof(Startup));
 
             //Registering services
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
