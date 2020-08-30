@@ -48,5 +48,14 @@ namespace Insurance.WebApi.Controllers
 
             return Ok(user);
         }
+
+        [HttpGet("{id}/roles")]
+        [Authorize]
+        public async Task<IActionResult> GetRolesByUserId(int id)
+        {
+            var roles = await _userEngine.GetRolesByUserIdAsync(id);
+
+            return Ok(roles);
+        }
     }
 }
