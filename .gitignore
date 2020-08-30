@@ -10,3 +10,5 @@
 /Insurance.Api/.vs/Insurance.Api/config
 /Insurance.Api/.vs/Insurance.Api/DesignTimeBuild
 *.user
+/Insurance.Api/InsuranceEngine/bin/Debug/netcoreapp3.1
+/Insurance.Api/InsuranceEngine/obj

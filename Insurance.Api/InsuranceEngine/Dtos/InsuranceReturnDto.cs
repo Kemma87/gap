@@ -1,7 +1,7 @@
 ﻿using DataAccess.Models;
 using System;
 
-namespace Insurance.WebApi.Dto
+namespace InsuranceEngine.Dtos
 {
     public class InsuranceReturnDto
     {

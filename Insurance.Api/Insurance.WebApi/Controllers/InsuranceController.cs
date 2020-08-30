@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using DataAccess.Contracts;
-using DataAccess.Models;
-using Insurance.WebApi.Dto;
+﻿using InsuranceEngine.Contracts;
+using InsuranceEngine.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Insurance.WebApi.Controllers
@@ -13,27 +10,24 @@ namespace Insurance.WebApi.Controllers
     [ApiController]
     public class InsuranceController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IInsuranceEngine _insuranceEngine;
 
-        public InsuranceController(IUnitOfWork unitOfWork, IMapper mapper)
+        public InsuranceController(IInsuranceEngine insuranceEngine)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _insuranceEngine = insuranceEngine;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _unitOfWork.InsuranceRepository.GetAllInsurancesAsync();
-            var listOfInsurances = _mapper.Map<IEnumerable<InsuranceReturnDto>>(result);
+            var listOfInsurances = await _insuranceEngine.GetAllInsurancesAsync();
             return Ok(listOfInsurances);
         }
 
         [HttpGet("{id}", Name = "GetInsurance")]
         public async Task<IActionResult> GetById(string userId, int id)
         {
-            var insurance = await _unitOfWork.InsuranceRepository.GetAllInsurancesByIdAsync(id);
+            var insurance = await _insuranceEngine.GetAllInsurancesByIdAsync(id);
 
             if (insurance == null)
             {
@@ -46,25 +40,19 @@ namespace Insurance.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(string userId, InsuranceCreationDto insurance)
         {
-            var insuranceToCreate = _mapper.Map<InsurancePolicy>(insurance);
-            await _unitOfWork.InsuranceRepository.AddAsync(insuranceToCreate);
-            await _unitOfWork.CommitAsync();
-
-            return CreatedAtRoute("GetInsurance", new { Controller = "Insurance", id = insuranceToCreate.Id }, insuranceToCreate);
+            var insuranceCreated = await _insuranceEngine.AddAsync(insurance);
+            return CreatedAtRoute("GetInsurance", new { Controller = "Insurance", id = insuranceCreated.Id }, insuranceCreated);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string userId, int id)
         {
-            var insurance = await _unitOfWork.InsuranceRepository.GetByIdAsync(id);
+            var result = await _insuranceEngine.DeleteAsync(id);
 
-            if (insurance == null)
+            if (!result)
             {
                 throw new ArgumentException($"No Insurance found for the Id: {id}");
-            }
-
-            _unitOfWork.InsuranceRepository.Delete(insurance);
-            await _unitOfWork.CommitAsync();
+            }            
 
             return Ok();
         }

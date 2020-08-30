@@ -6,6 +6,7 @@ namespace DataAccess.Contracts
     {
         IInsuranceRepository InsuranceRepository { get;  }
         IUserRepository UserRepository { get; }
+        IRolesRepository RolesRepository { get; }
         Task CommitAsync();
     }
 }

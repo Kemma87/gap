@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Insurance.WebApi.Dto
+namespace InsuranceEngine.Dtos
 {
     public class InsuranceCreationDto
     {

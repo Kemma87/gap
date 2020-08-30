@@ -19,6 +19,7 @@ namespace DataAccess.Repositories
         {
             var user = await _dataContext.Users
                 .Include(p => p.Person).ThenInclude(x => x.Country)
+                .Include(p => p.Roles)
                 .Include(p => p.Person).ThenInclude(x => x.Gender).FirstOrDefaultAsync(x => x.Username == username);
 
             if (user == null)

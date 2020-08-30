@@ -2,12 +2,15 @@ using AutoMapper;
 using DataAccess;
 using DataAccess.Contracts;
 using DataAccess.Repositories;
+using InsuranceEngine.Contracts;
+using Engine = InsuranceEngine;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using InsuranceEngine;
 
 namespace Insurance.WebApi
 {
@@ -26,12 +29,15 @@ namespace Insurance.WebApi
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("DataAccess")));
             services.AddControllers();
 
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(UserEngine).Assembly);
 
             //Registering services
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IInsuranceRepository, InsuranceRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRolesRepository, RolesRepository>();
+            services.AddScoped<IInsuranceEngine, Engine.InsuranceEngine>();
+            services.AddScoped<IUserEngine, Engine.UserEngine>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
