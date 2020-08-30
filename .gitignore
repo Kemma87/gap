@@ -12,3 +12,6 @@
 *.user
 /Insurance.Api/InsuranceEngine/bin/Debug/netcoreapp3.1
 /Insurance.Api/InsuranceEngine/obj
+/Insurance.Web/Insurance.Web/bin/Debug/netcoreapp3.1
+/Insurance.Web/.vs/Insurance.Web
+/Insurance.Web/Insurance.Web/obj
