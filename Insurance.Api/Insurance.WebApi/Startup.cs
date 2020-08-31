@@ -53,6 +53,7 @@ namespace Insurance.WebApi
             services.AddScoped<ICoverTypeEngine, CoverTypeEngine>();
             services.AddScoped<IRiskTypeEngine, RiskTypeEngine>();
             services.AddScoped<IUserEngine, UserEngine>();
+            services.AddScoped<IPersonEngine, PersonEngine>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthorizationHandler, RoleHandler>();
 

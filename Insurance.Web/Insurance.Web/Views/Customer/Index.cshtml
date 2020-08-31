@@ -1,7 +1,61 @@
-﻿@{
+﻿@model Insurance.Web.Models.PersonInsuranceModel
+@{
     ViewData["Title"] = "Customer";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome Customer</h1>
+    <h1 class="display-4">Insurances</h1>
+    <hr />
+    <a class="btn btn-outline-success" asp-area="" asp-controller="Home" asp-action="LoadAddData">Add Insurance To Person</a>
+    <hr />
+    <select asp-for="PersonId" class="form-control w-25" asp-items="@(new SelectList(ViewBag.Person, "Id","FullName"))"></select>
+    <hr />
+    @if (Model != null && Model.Insurances.Count > 0)
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Start</th>
+                    <th scope="col">Cost</th>
+                    <th scope="col">Cover Period</th>
+                    <th scope="col">Risk</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var insurance in Model.Insurances)
+                {
+                    <tr>
+                        <td>
+                            <span>@insurance.Id</span>
+                        </td>
+                        <td>
+                            <span>@insurance.Name</span>
+                        </td>
+                        <td>
+                            <span>@insurance.Description</span>
+                        </td>
+                        <td>
+                            <span>@insurance.Start.ToString("dd/MM/yyyy")</span>
+                        </td>
+                        <td>
+                            <span>@insurance.Cost</span>
+                        </td>
+                        <td>
+                            <span>@insurance.CoverPeriod</span>
+                        </td>
+                        <td>
+                            <span>@insurance.RiskType.Name</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h4>No insurances found</h4>
+    }
 </div>

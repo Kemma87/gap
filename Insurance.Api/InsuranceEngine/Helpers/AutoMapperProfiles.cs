@@ -20,6 +20,8 @@ namespace InsuranceEngine.Helpers
             CreateMap<Location, LocationDto>();
             CreateMap<CoverType, CoverTypeDto>();
             CreateMap<RiskType, RiskTypeDto>();
+            CreateMap<InsurancePolicy, PersonInsuranceDto>();
+            CreateMap<Person, PersonDto>();
             CreateMap<User, UserReturnDto>()
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Person.FirstName))
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Person.LastName))

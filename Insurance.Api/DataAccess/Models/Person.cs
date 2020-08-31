@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Models
@@ -23,5 +24,8 @@ namespace DataAccess.Models
         [Required]
         public int GenderId { get; set; }
         public Gender Gender { get; set; }
+
+        [Required]
+        public ICollection<PersonInsurance> Insurances { get; set; }
     }
 }

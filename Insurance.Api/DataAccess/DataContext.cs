@@ -17,6 +17,7 @@ namespace DataAccess
         public DbSet<RiskType> RiskTypes { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRoles> UserRoles { get; set; }
+        public DbSet<PersonInsurance> PersonInsurances { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -55,6 +56,21 @@ namespace DataAccess
            .WithMany(u => u.Users)
            .HasForeignKey(u => u.RoleId)
            .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PersonInsurance>()
+           .HasKey(x => new { x.PersonId, x.InsuranceId });
+
+            builder.Entity<PersonInsurance>()
+           .HasOne(u => u.Person)
+           .WithMany(u => u.Insurances)
+           .HasForeignKey(u => u.PersonId)
+           .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<PersonInsurance>()
+           .HasOne(u => u.Insurance)
+           .WithMany(u => u.Persons)
+           .HasForeignKey(u => u.InsuranceId)
+           .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

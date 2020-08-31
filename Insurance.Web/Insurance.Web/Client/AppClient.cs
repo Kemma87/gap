@@ -58,6 +58,15 @@ namespace Insurance.Web.Client
             return locations;
         }
 
+        public async Task<List<PersonModel>> GetAllPersonsAsync()
+        {
+            using var response = await _client.GetAsync("/api/person");
+            string apiResponse = await response.Content.ReadAsStringAsync();
+
+            var persons = JsonConvert.DeserializeObject<List<PersonModel>>(apiResponse);
+            return persons;
+        }
+
         public async Task<List<RiskTypeModel>> GetAllRiskTypesAsync()
         {
             using var response = await _client.GetAsync("/api/risktype");
@@ -69,11 +78,20 @@ namespace Insurance.Web.Client
 
         public async Task<InsuranceModel> GetInsuranceByIdAsync(int id)
         {
-            using var response = await _client.GetAsync($"/api/insurance/{id}?username={_username}");
+            using var response = await _client.GetAsync($"/api/insurances/{id}?username={_username}");
             string apiResponse = await response.Content.ReadAsStringAsync();
 
             var insurance = JsonConvert.DeserializeObject<InsuranceModel>(apiResponse);
             return insurance;
+        }
+
+        public async Task<List<InsuranceModel>> GetInsuranceByPersonAsync(int personId)
+        {
+            using var response = await _client.GetAsync($"/api/person/{personId}/insurance?username={_username}");
+            string apiResponse = await response.Content.ReadAsStringAsync();
+
+            var insurances = JsonConvert.DeserializeObject<List<InsuranceModel>>(apiResponse);
+            return insurances;
         }
 
         public async Task<List<InsuranceModel>> GetInsurancesAsync()

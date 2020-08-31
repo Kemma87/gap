@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Models
@@ -32,5 +33,8 @@ namespace DataAccess.Models
         [Required]
         public int CoverTypeId { get; set; }
         public CoverType CoverType { get; set; }
+
+        [Required]
+        public ICollection<PersonInsurance> Persons { get; set; }
     }
 }
