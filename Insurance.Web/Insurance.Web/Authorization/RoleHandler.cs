@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Insurance.Web.Client;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -14,12 +15,12 @@ namespace Insurance.Web.Authorization
 {
     public class RoleHandler : AuthorizationHandler<RolesAuthorizationRequirement>
     {
-        private readonly IConfiguration _config;
         private readonly IHttpContextAccessor _httpContext;
-        public RoleHandler(IConfiguration config, IHttpContextAccessor httpContext)
+        private readonly IAppClient _client;
+        public RoleHandler(IHttpContextAccessor httpContext, IAppClient client)
         {
-            _config = config;
             _httpContext = httpContext;
+            _client = client;
         }
 
         protected async override Task HandleRequirementAsync(AuthorizationHandlerContext context, RolesAuthorizationRequirement requirement)
@@ -32,16 +33,9 @@ namespace Insurance.Web.Authorization
             }
             else
             {
-                var token = _httpContext.HttpContext.Session.GetString("token");
                 var currentUserId = int.Parse(context.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                using var httpClient = new HttpClient();          
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                using var response = await httpClient.GetAsync($"{_config.GetSection("AppSettings:BaseUrl").Value}/api/auth/{currentUserId}/roles");
-                string apiResponse = await response.Content.ReadAsStringAsync();
-
-                var roles = JsonConvert.DeserializeObject<List<string>>(apiResponse);
-
+                var roles = await _client.GetRolesByUserIdAsync(currentUserId);
                 var isValidRole = roles.Intersect(requirement.AllowedRoles).Any();
                 if (isValidRole)
                 {

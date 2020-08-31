@@ -28,7 +28,7 @@ namespace Insurance.WebApi.Controllers
         }
 
         [HttpGet("{id}", Name = "GetInsurance")]
-        public async Task<IActionResult> GetById(string username, int id)
+        public async Task<IActionResult> GetById([FromQuery] string username, int id)
         {
             if (username != User.FindFirst(ClaimTypes.Name).Value)
             {
@@ -46,7 +46,7 @@ namespace Insurance.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(string username, InsuranceCreationDto insurance)
+        public async Task<IActionResult> Add([FromQuery] string username, InsuranceCreationDto insurance)
         {
             if (username != User.FindFirst(ClaimTypes.Name).Value)
             {
@@ -58,7 +58,7 @@ namespace Insurance.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string username, int id)
+        public async Task<IActionResult> Delete([FromQuery] string username, int id)
         {
             if (username != User.FindFirst(ClaimTypes.Name).Value)
             {

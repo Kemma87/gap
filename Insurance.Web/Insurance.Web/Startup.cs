@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Insurance.Web.Authorization;
+using Insurance.Web.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +36,7 @@ namespace Insurance.Web
 
             services.AddHttpContextAccessor();
             services.AddScoped<IAuthorizationHandler, RoleHandler>();
+            services.AddHttpClient<IAppClient, AppClient>(c => c.BaseAddress = new Uri(Configuration.GetSection("AppSettings:BaseUrl").Value));
 
             services.AddMvc();
             services.AddAuthorization(options =>

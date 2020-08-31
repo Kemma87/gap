@@ -1,11 +1,10 @@
-﻿using Insurance.Web.Models;
+﻿using Insurance.Web.Client;
+using Insurance.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Insurance.Web.Controllers
@@ -13,9 +12,12 @@ namespace Insurance.Web.Controllers
     public class LoginController : Controller
     {
         private readonly IConfiguration _config;
-        public LoginController(IConfiguration config)
+        private readonly IAppClient _client;
+
+        public LoginController(IConfiguration config, IAppClient client)
         {
             _config = config;
+            _client = client;
         }
 
         [AllowAnonymous]
@@ -29,19 +31,14 @@ namespace Insurance.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                using var httpClient = new HttpClient();
-                var content = JsonConvert.SerializeObject(login);
+                var response = await _client.LoginAsync(login);
 
-                using var response = await httpClient.PostAsync($"{_config.GetSection("AppSettings:BaseUrl").Value}/api/auth/login", 
-                    new StringContent(content, Encoding.UTF8, "application/json"));
-                string apiResponse = await response.Content.ReadAsStringAsync();
-
-                var status = JsonConvert.DeserializeObject<ApiResponse>(apiResponse);
+                var status = JsonConvert.DeserializeObject<ApiResponse>(response);
                 int.TryParse(status.Status, out int statusCode);
 
                 if (statusCode == 0 || statusCode == 200 || statusCode == 201)
                 {
-                    var user = JsonConvert.DeserializeObject<UserModel>(apiResponse);
+                    var user = JsonConvert.DeserializeObject<UserModel>(response);
                     HttpContext.Session.SetString("token", user.Token);
                     HttpContext.Session.SetString("name", $"{user.FirstName} {user.LastName}");
 
