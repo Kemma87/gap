@@ -30,6 +30,30 @@ namespace Insurance.WebApi.Controllers
             return Ok(personInsurances);
         }
 
+        [HttpPost("{personId}/insurance/{insuranceId}")]
+        public async Task<IActionResult> AddPersonToInsurnace([FromQuery] string username, int personId, int insuranceId)
+        {
+            if (username != User.FindFirst(ClaimTypes.Name).Value)
+            {
+                return Unauthorized();
+            }
+
+            await _personEngine.AddPersonInsuranceAsync(personId, insuranceId);
+            return Ok();
+        }
+
+        [HttpDelete("{personId}/insurance/{insuranceId}")]
+        public async Task<IActionResult> DeletePersonToInsurnace([FromQuery] string username, int personId, int insuranceId)
+        {
+            if (username != User.FindFirst(ClaimTypes.Name).Value)
+            {
+                return Unauthorized();
+            }
+
+            await _personEngine.DeletePersonInsuranceAsync(personId, insuranceId);
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

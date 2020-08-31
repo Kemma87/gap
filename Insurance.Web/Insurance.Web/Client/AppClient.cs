@@ -35,6 +35,13 @@ namespace Insurance.Web.Client
                 new StringContent(content, Encoding.UTF8, "application/json"));
         }
 
+        public async Task AddPersonInsuranceAsync(int personId, int insuranceId)
+        {
+            using var response = await _client.PostAsync($"/api/person/{personId}/insurance/{insuranceId}/?username={_username}", 
+                new StringContent(string.Empty));
+            string apiResponse = await response.Content.ReadAsStringAsync();
+        }
+
         public async Task DeleteInsuranceAsync(int id)
         {
             using var response = await _client.DeleteAsync($"/api/insurance/{id}?username={_username}");
@@ -78,7 +85,7 @@ namespace Insurance.Web.Client
 
         public async Task<InsuranceModel> GetInsuranceByIdAsync(int id)
         {
-            using var response = await _client.GetAsync($"/api/insurances/{id}?username={_username}");
+            using var response = await _client.GetAsync($"/api/insurance/{id}?username={_username}");
             string apiResponse = await response.Content.ReadAsStringAsync();
 
             var insurance = JsonConvert.DeserializeObject<InsuranceModel>(apiResponse);
@@ -87,7 +94,7 @@ namespace Insurance.Web.Client
 
         public async Task<List<InsuranceModel>> GetInsuranceByPersonAsync(int personId)
         {
-            using var response = await _client.GetAsync($"/api/person/{personId}/insurance?username={_username}");
+            using var response = await _client.GetAsync($"/api/person/{personId}/insurances?username={_username}");
             string apiResponse = await response.Content.ReadAsStringAsync();
 
             var insurances = JsonConvert.DeserializeObject<List<InsuranceModel>>(apiResponse);
@@ -120,6 +127,12 @@ namespace Insurance.Web.Client
                 new StringContent(content, Encoding.UTF8, "application/json"));
 
            return await response.Content.ReadAsStringAsync();
+        }
+
+        public async Task RemovePersonInsuranceAsync(int personId, int insuranceId)
+        {
+            using var response = await _client.DeleteAsync($"/api/person/{personId}/insurance/{insuranceId}/?username={_username}");
+            string apiResponse = await response.Content.ReadAsStringAsync();
         }
 
         public async Task UpdateInsuranceAsync(InsuranceModel insurance)

@@ -1,0 +1,38 @@
+﻿@model Insurance.Web.Models.PersonInsuranceModel
+
+@{
+    ViewData["Title"] = "Associate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="text-center">
+
+    <hr />
+    <h1 class="display-4">Add Insurance to Person</h1>
+    <hr />
+    <form asp-action="AddInsuranceToPerson">
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="InsuranceId" class="control-label">Insurance</label>
+                    <select asp-for="InsuranceId" class="form-control" asp-items="@(new SelectList(ViewBag.Insurances, "Id", "Name"))"></select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="PersonId" class="control-label">Person</label>
+                    <select asp-for="PersonId" class="form-control" asp-items="@(new SelectList(ViewBag.Person, "Id", "FullName"))"></select>
+                </div>
+            </div>
+        </div>
+        <input type="submit" value="Add Insurance" class="btn btn-outline-success" />
+    </form>
+    <hr />
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+</div>

@@ -18,5 +18,6 @@ namespace Insurance.Web.Models
         public int CoverTypeId { get; set; }
         public int LocationId { get; set; }
         public string UserCreate { get; set; }
+        public bool IsChecked { get; set; }
     }
 }

@@ -34,12 +34,6 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Index">Customer</a>
                                 </li>
                             }
-                            @if (roles.Contains("Administrator"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-                                </li>
-                            }
                         </ul>
                         @using (Html.BeginForm("Logout", "Login", FormMethod.Post, new { @class = "form-inline my-2 my-lg-0" }))
                         {

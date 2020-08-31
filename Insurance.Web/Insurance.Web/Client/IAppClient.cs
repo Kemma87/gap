@@ -18,5 +18,7 @@ namespace Insurance.Web.Client
         Task AddInsuranceAsync(InsuranceNewEditModel insurance);
         Task UpdateInsuranceAsync(InsuranceModel insurance);
         Task DeleteInsuranceAsync(int id);
+        Task AddPersonInsuranceAsync(int personId, int insuranceId);
+        Task RemovePersonInsuranceAsync(int personId, int insuranceId);
     }
 }

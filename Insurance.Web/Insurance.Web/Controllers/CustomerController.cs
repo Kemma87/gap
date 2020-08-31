@@ -2,6 +2,7 @@
 using Insurance.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,13 +30,36 @@ namespace Insurance.Web.Controllers
                 var model = new PersonInsuranceModel
                 {
                     PersonId = personList.FirstOrDefault().Id,
-                    Insurances = await _client.GetInsuranceByPersonAsync(personId)
-                };
+                    Insurances = await _client.GetInsuranceByPersonAsync(personId),
+                    RiskTypes = await _client.GetAllRiskTypesAsync()
+            };
 
                 return View(model);
             }
+            else
+            {
+                return View();
+            }
+        }
+
+        public async Task<IActionResult> Associate()
+        {
+            ViewBag.Person = await _client.GetAllPersonsAsync();
+            ViewBag.Insurances = await _client.GetInsurancesAsync();
 
             return View();
+        }
+
+        public async Task<IActionResult> AddInsuranceToPerson(PersonInsuranceModel insurancePerson)
+        {
+            await _client.AddPersonInsuranceAsync(insurancePerson.PersonId, insurancePerson.InsuranceId);
+            return RedirectToAction("Index", "Customer");
+        }
+
+        public async Task<IActionResult> DeleteInsurance(int insuranceId, int personId)
+        {
+            await _client.RemovePersonInsuranceAsync(personId, insuranceId);
+            return RedirectToAction("Index", "Customer");
         }
     }
 }
