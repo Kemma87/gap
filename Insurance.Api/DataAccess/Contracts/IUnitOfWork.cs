@@ -9,6 +9,9 @@ namespace DataAccess.Contracts
         IRolesRepository RolesRepository { get; }
         IPersonRepository PersonRepository { get; }
         IUserRoleRepository UserRoleRepository { get; }
+        ILocationRepository LocationRepository { get; }
+        ICoverTypeRepository CoverTypeRepository { get; }
+        IRiskTypeRepository RiskTypeRepository { get; }
         Task CommitAsync();
     }
 }

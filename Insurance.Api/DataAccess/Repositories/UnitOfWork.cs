@@ -13,6 +13,9 @@ namespace DataAccess.Repositories
         private RolesRepository _rolesRepository;
         private PersonRepository _personRepository;
         private UserRoleRepository _userRoleRepository;
+        private LocationRepository _locationRepository;
+        private CoverTypeRepository _coverTypeRepository;
+        private RiskTypeRepository _riskTypeRepository;
 
         public UnitOfWork(DataContext context)
         {
@@ -56,6 +59,30 @@ namespace DataAccess.Repositories
             get
             {
                 return _userRoleRepository ??= new UserRoleRepository(_context);
+            }
+        }
+
+        public ILocationRepository LocationRepository
+        {
+            get
+            {
+                return _locationRepository ??= new LocationRepository(_context);
+            }
+        }
+
+        public ICoverTypeRepository CoverTypeRepository
+        {
+            get
+            {
+                return _coverTypeRepository ??= new CoverTypeRepository(_context);
+            }
+        }
+
+        public IRiskTypeRepository RiskTypeRepository
+        {
+            get
+            {
+                return _riskTypeRepository ??= new RiskTypeRepository(_context);
             }
         }
 

@@ -45,6 +45,9 @@ namespace Insurance.WebApi
             services.AddScoped<IInsuranceRepository, InsuranceRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRolesRepository, RolesRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<ICoverTypeRepository, CoverTypeRepository>();
+            services.AddScoped<IRiskTypeRepository, RiskTypeRepository>();
             services.AddScoped<IInsuranceEngine, Engine.InsuranceEngine>();
             services.AddScoped<IUserEngine, Engine.UserEngine>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -78,6 +78,7 @@ namespace DataAccess.Seedings
 
                 foreach (var location in locations)
                 {
+                    location.CountryId = context.Countries.FirstOrDefault().Id;
                     context.Locations.Add(location);
                 }
                 context.SaveChanges();

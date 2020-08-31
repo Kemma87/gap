@@ -8,9 +8,16 @@ namespace InsuranceEngine.Helpers
     {
         public AutoMapperProfiles()
         {
+            //From Dto to DbObject
             CreateMap<InsuranceCreationDto, InsurancePolicy>();
-            CreateMap<InsurancePolicy, InsuranceReturnDto>();
             CreateMap<UserAddDto, Person>();
+
+
+            CreateMap<InsurancePolicy, InsuranceReturnDto>();
+            
+            CreateMap<Location, LocationDto>();
+            CreateMap<CoverType, CoverTypeDto>();
+            CreateMap<RiskType, RiskTypeDto>();
             CreateMap<UserAddDto, User>()
               .ForMember(dest => dest.Roles, opt => opt.Ignore());
 
