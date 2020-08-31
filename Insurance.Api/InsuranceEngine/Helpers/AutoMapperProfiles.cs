@@ -14,8 +14,9 @@ namespace InsuranceEngine.Helpers
 
 
             CreateMap<InsurancePolicy, InsuranceReturnDto>();
-            
+
             CreateMap<Location, LocationDto>();
+
             CreateMap<CoverType, CoverTypeDto>();
             CreateMap<RiskType, RiskTypeDto>();
             CreateMap<UserAddDto, User>()

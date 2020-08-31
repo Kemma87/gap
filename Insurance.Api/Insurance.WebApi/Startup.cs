@@ -49,7 +49,10 @@ namespace Insurance.WebApi
             services.AddScoped<ICoverTypeRepository, CoverTypeRepository>();
             services.AddScoped<IRiskTypeRepository, RiskTypeRepository>();
             services.AddScoped<IInsuranceEngine, Engine.InsuranceEngine>();
-            services.AddScoped<IUserEngine, Engine.UserEngine>();
+            services.AddScoped<ILocationEngine, LocationEngine>();
+            services.AddScoped<ICoverTypeEngine, CoverTypeEngine>();
+            services.AddScoped<IRiskTypeEngine, RiskTypeEngine>();
+            services.AddScoped<IUserEngine, UserEngine>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthorizationHandler, RoleHandler>();
 
