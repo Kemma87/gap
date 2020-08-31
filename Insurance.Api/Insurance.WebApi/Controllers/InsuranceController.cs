@@ -74,5 +74,18 @@ namespace Insurance.WebApi.Controllers
 
             return Ok();
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromQuery] string username, InsuranceUpdateDto insurance)
+        {
+            if (username != User.FindFirst(ClaimTypes.Name).Value)
+            {
+                return Unauthorized();
+            }
+
+            await _insuranceEngine.UpdateAsync(insurance);
+
+            return Ok();
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace InsuranceEngine.Contracts
         Task<IEnumerable<InsuranceReturnDto>> GetAllInsurancesAsync();
         Task<InsuranceReturnDto> GetAllInsurancesByIdAsync(int id);
         Task<InsuranceReturnDto> AddAsync(InsuranceCreationDto insurance);
+        Task UpdateAsync(InsuranceUpdateDto insurance);
         Task<bool> DeleteAsync(int Id);
     }
 }

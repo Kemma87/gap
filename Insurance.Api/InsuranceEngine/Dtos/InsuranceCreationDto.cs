@@ -22,7 +22,7 @@ namespace InsuranceEngine.Dtos
         public DateTime Start { get; set; }
 
         [Required]
-        public byte ConverPeriod { get; set; }
+        public byte CoverPeriod { get; set; }
 
         [Required]
         public long Cost { get; set; }

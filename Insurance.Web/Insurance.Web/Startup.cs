@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
 using Insurance.Web.Authorization;
 using Insurance.Web.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,11 +6,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Insurance.Web
 {
@@ -32,6 +30,7 @@ namespace Insurance.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddCors();
 
             services.AddHttpContextAccessor();

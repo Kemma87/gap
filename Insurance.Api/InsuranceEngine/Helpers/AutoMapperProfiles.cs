@@ -10,18 +10,16 @@ namespace InsuranceEngine.Helpers
         {
             //From Dto to DbObject
             CreateMap<InsuranceCreationDto, InsurancePolicy>();
+            CreateMap<InsuranceUpdateDto, InsurancePolicy>();
             CreateMap<UserAddDto, Person>();
-
-
-            CreateMap<InsurancePolicy, InsuranceReturnDto>();
-
-            CreateMap<Location, LocationDto>();
-
-            CreateMap<CoverType, CoverTypeDto>();
-            CreateMap<RiskType, RiskTypeDto>();
             CreateMap<UserAddDto, User>()
               .ForMember(dest => dest.Roles, opt => opt.Ignore());
 
+            //From DbObject to Dto
+            CreateMap<InsurancePolicy, InsuranceReturnDto>();
+            CreateMap<Location, LocationDto>();
+            CreateMap<CoverType, CoverTypeDto>();
+            CreateMap<RiskType, RiskTypeDto>();
             CreateMap<User, UserReturnDto>()
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Person.FirstName))
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Person.LastName))

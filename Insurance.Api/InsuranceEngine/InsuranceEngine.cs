@@ -54,5 +54,13 @@ namespace InsuranceEngine
             var insurance = await _unitOfWork.InsuranceRepository.GetAllInsurancesByIdAsync(id);
             return _mapper.Map<InsuranceReturnDto>(insurance);
         }
+
+        public async Task UpdateAsync(InsuranceUpdateDto insurance)
+        {
+            var insurnacePolicy = _mapper.Map<InsurancePolicy>(insurance);
+            _unitOfWork.InsuranceRepository.Update(insurnacePolicy);
+
+            await _unitOfWork.CommitAsync();
+        }
     }
 }

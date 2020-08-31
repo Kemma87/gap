@@ -26,9 +26,54 @@ namespace Insurance.Web.Client
             _username = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.Name);
         }
 
+        public async Task AddInsuranceAsync(InsuranceNewEditModel insurance)
+        {
+            insurance.UserCreate = _username;
+            var content = JsonConvert.SerializeObject(insurance);
+
+            using var response = await _client.PostAsync($"/api/insurance?username={_username}",
+                new StringContent(content, Encoding.UTF8, "application/json"));
+        }
+
         public async Task DeleteInsuranceAsync(int id)
         {
             using var response = await _client.DeleteAsync($"/api/insurance/{id}?username={_username}");
+        }
+
+        public async Task<List<CoverTypeModel>> GetAllCoverTypesAsync()
+        {
+            using var response = await _client.GetAsync("/api/covertype");
+            string apiResponse = await response.Content.ReadAsStringAsync();
+
+            var coverTypes = JsonConvert.DeserializeObject<List<CoverTypeModel>>(apiResponse);
+            return coverTypes;
+        }
+
+        public async Task<List<LocationModel>> GetAllLocationsAsync()
+        {
+            using var response = await _client.GetAsync("/api/location");
+            string apiResponse = await response.Content.ReadAsStringAsync();
+
+            var locations = JsonConvert.DeserializeObject<List<LocationModel>>(apiResponse);
+            return locations;
+        }
+
+        public async Task<List<RiskTypeModel>> GetAllRiskTypesAsync()
+        {
+            using var response = await _client.GetAsync("/api/risktype");
+            string apiResponse = await response.Content.ReadAsStringAsync();
+
+            var riskTypes = JsonConvert.DeserializeObject<List<RiskTypeModel>>(apiResponse);
+            return riskTypes;
+        }
+
+        public async Task<InsuranceModel> GetInsuranceByIdAsync(int id)
+        {
+            using var response = await _client.GetAsync($"/api/insurance/{id}?username={_username}");
+            string apiResponse = await response.Content.ReadAsStringAsync();
+
+            var insurance = JsonConvert.DeserializeObject<InsuranceModel>(apiResponse);
+            return insurance;
         }
 
         public async Task<List<InsuranceModel>> GetInsurancesAsync()
@@ -57,6 +102,14 @@ namespace Insurance.Web.Client
                 new StringContent(content, Encoding.UTF8, "application/json"));
 
            return await response.Content.ReadAsStringAsync();
+        }
+
+        public async Task UpdateInsuranceAsync(InsuranceModel insurance)
+        {
+            var content = JsonConvert.SerializeObject(insurance);
+
+            using var response = await _client.PutAsync($"/api/insurance?username={_username}",
+                new StringContent(content, Encoding.UTF8, "application/json"));
         }
     }
 }

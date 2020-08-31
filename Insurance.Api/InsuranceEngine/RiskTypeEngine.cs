@@ -20,7 +20,7 @@ namespace InsuranceEngine
 
         public async Task<List<RiskTypeDto>> GetAllRiskTypesAsync()
         {
-            var result = await _unitOfWork.LocationRepository.GetAllAsync();
+            var result = await _unitOfWork.RiskTypeRepository.GetAllAsync();
             return _mapper.Map<List<RiskTypeDto>>(result);
         }
     }
